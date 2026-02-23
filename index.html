@@ -34,8 +34,6 @@
   --tarot-text: #7b1fa2;
   /* 新增群聊相关变量 */
   --group-member-bg: rgba(138, 127, 141, 0.15);
-  /* 新增：accent-rgb 用于 rgba 计算 */
-  --accent-rgb: 138,127,141;
 }
 
 /* 基础样式 - 完全保留第二个文件的所有CSS */
@@ -999,85 +997,6 @@ body {
   }
 }
 /* ===== 表情包选择器样式结束 ===== */
-
-/* ===== 新增拍一拍样式（从第一个文件移植） ===== */
-.poke-list-view {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 4px;
-}
-
-.poke-quick-item {
-  padding: 10px 14px;
-  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.13) 0%, rgba(var(--accent-rgb), 0.04) 50%, rgba(var(--accent-rgb), 0.09) 100%);
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  text-align: left;
-  font-size: 13px;
-  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 1px 5px rgba(var(--accent-rgb), 0.1);
-}
-
-.poke-quick-item::before {
-  content: '✦';
-  font-size: 10px;
-  color: var(--accent);
-  opacity: 0.5;
-  flex-shrink: 0;
-}
-
-.poke-quick-item:hover {
-  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.22) 0%, rgba(var(--accent-rgb), 0.08) 50%, rgba(var(--accent-rgb), 0.16) 100%);
-  transform: translateX(4px);
-  color: var(--text);
-  box-shadow: 0 3px 10px rgba(var(--accent-rgb), 0.18);
-}
-
-.custom-poke-btn {
-  width: 100%;
-  padding: 11px 14px;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, var(--accent), rgba(var(--accent-rgb), 0.8));
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.25);
-  transition: all 0.22s ease;
-  letter-spacing: 0.3px;
-}
-
-.custom-poke-btn:hover {
-  filter: brightness(1.08);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.32);
-}
-/* ===== 拍一拍样式结束 ===== */
-
-/* ===== 系统消息样式（新增） ===== */
-.system-message {
-  background: rgba(138, 127, 141, 0.1);
-  color: var(--accent);
-  font-style: italic;
-  text-align: center;
-  max-width: 80%;
-  margin: 0 auto;
-  border-radius: 20px;
-  padding: 6px 12px;
-}
-/* ===== 系统消息样式结束 ===== */
 
 /* 设置面板 - 重新设计为左侧竖排标签 + 右侧可滑动内容 */
 .settings-panel {
@@ -2192,7 +2111,7 @@ input:checked + .slider:before {
   background: rgba(92, 92, 92, 0.5);
 }
 
-/* 响应式设计 */
+/* ========== 修改移动端响应式设计，确保输入框和按钮在一行 ========== */
 @media (max-width: 768px) {
   .container {
     height: 95vh;
@@ -2272,7 +2191,30 @@ input:checked + .slider:before {
   }
   
   .input-area-buttons {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 4px;                /* 缩小按钮间距 */
+  }
+  
+  .message-input {
+    flex: 1;                  /* 输入框自适应剩余宽度 */
+    min-width: 80px;          /* 允许进一步缩小 */
+    padding: 12px 12px;       /* 适当减小左右内边距 */
+  }
+  
+  .continue-button {
+    width: 36px;              /* 缩小宽度 */
+    height: 36px;
+    font-size: 1.2rem;        /* 调整字体大小 */
+  }
+  
+  .upload-image-button {
+    width: 36px;              /* 与继续按钮保持一致 */
+    height: 36px;
+  }
+  
+  .send-button {
+    padding: 10px 12px;       /* 减小水平内边距 */
+    font-size: 0.85rem;       /* 略缩小文字 */
   }
   
   .background-options {
@@ -2294,22 +2236,19 @@ input:checked + .slider:before {
   
   /* 移动端调整输入框布局 */
   .message-input {
-    min-width: 120px;
+    /* 已在上方定义 */
   }
   
   .continue-button {
-    width: 40px;
-    height: 40px;
-    font-size: 1.3rem;
+    /* 已在上方定义 */
   }
   
   .upload-image-button {
-    width: 40px;
-    height: 40px;
+    /* 已在上方定义 */
   }
   
   .send-button {
-    padding: 12px 16px;
+    /* 已在上方定义 */
   }
   
   .preset-buttons {
@@ -3573,19 +3512,6 @@ input:checked + .slider:before {
             </select>
           </div>
         </div>
-
-        <!-- 新增：对方拍一拍频率控制 -->
-        <div class="max-count-control" style="margin-top: 16px; border-top: 1px solid rgba(92,92,92,0.1); padding-top: 16px;">
-          <div class="max-count-label">对方拍一拍频率:</div>
-          <select class="max-count-select" id="partnerPokeFrequency">
-            <option value="0">从不主动拍</option>
-            <option value="300000">5分钟</option>
-            <option value="600000" selected>10分钟</option>
-            <option value="1200000">20分钟</option>
-            <option value="1800000">30分钟</option>
-            <option value="3600000">1小时</option>
-          </select>
-        </div>
       </div>
     </div>
     
@@ -3911,20 +3837,6 @@ input:checked + .slider:before {
 
 <!-- 通话/视频小窗口会动态创建 -->
 
-<!-- 新增：拍一拍模态框 -->
-<div class="modal-overlay" id="pokeModal">
-  <div class="modal-content">
-    <h3 class="modal-title"><i class="material-icons">hand_sparkles</i> 拍一拍</h3>
-    <div style="margin-bottom: 16px;">
-      <input type="text" class="nickname-input" id="pokeInput" placeholder="例如：拍了拍对方的肩膀" style="width:100%; padding:8px; border-radius:6px; border:1px solid rgba(92,92,92,0.3); font-size:0.85rem;">
-    </div>
-    <div class="modal-buttons">
-      <button class="modal-btn secondary" id="cancelPoke">取消</button>
-      <button class="modal-btn primary" id="sendPoke">发送</button>
-    </div>
-  </div>
-</div>
-
 <script>
 // ========================
 // 第一部分：从第一个代码文件移植的健壮存储逻辑
@@ -3954,8 +3866,6 @@ class ChatDataManager {
         this.MUSIC_SETTINGS_KEY = 'seven_and_wish_music_settings';
         // 新增群聊设置存储键
         this.GROUP_SETTINGS_KEY = 'seven_and_wish_group_settings';
-        // 新增拍一拍存储键
-        this.POKES_KEY = 'seven_and_wish_pokes';
         
         // 版本控制
         this.DATA_VERSION_KEY = 'seven_and_wish_data_version';
@@ -4112,30 +4022,6 @@ class ChatDataManager {
         
         // 今日日期
         this.setStoredData(this.TODAY_DATE_KEY, new Date().toDateString());
-
-        // 默认拍一拍动作
-        this.setStoredData(this.POKES_KEY, [
-            "拍了拍我的头说你好可爱",
-            "戳了戳我的腰",
-            "从背后抱住了我",
-            "轻轻捏了捏我的脸",
-            "给我发了一个爱心",
-            "摸了摸我的头发",
-            "悄悄亲了一下我的脸颊",
-            "给我递了一杯热茶",
-            "为我披上外套",
-            "牵起了我的手",
-            "给我一个温暖的拥抱",
-            "轻轻拍了拍我的肩膀",
-            "给我发送了一个飞吻",
-            "戳了戳我的额头",
-            "给我发送了一个星星",
-            "轻轻拍了拍我的背",
-            "给我发送了一个月亮",
-            "温柔地摸了摸我的头",
-            "给我发送了一个太阳",
-            "拍了拍手"
-        ]);
         
         // 保存版本
         localStorage.setItem(this.DATA_VERSION_KEY, this.DATA_VERSION);
@@ -4521,15 +4407,6 @@ class ChatDataManager {
         return this.setStoredData(this.TODAY_DATE_KEY, dateStr);
     }
     
-    // ---- 拍一拍 ----
-    getPokes() {
-        return this.getStoredData(this.POKES_KEY) || [];
-    }
-    
-    savePokes(pokes) {
-        return this.setStoredData(this.POKES_KEY, pokes);
-    }
-    
     /**
      * 清除所有数据（用于重置功能）
      */
@@ -4582,7 +4459,6 @@ class ChatApp {
             loveDays: null,
             readNoReplyMessageIds: null,
             todayDate: null,
-            customPokes: [], // 拍一拍数据
             
             // 运行时状态
             isTyping: false,
@@ -4604,11 +4480,7 @@ class ChatApp {
             currentPlayingMusic: null,
             musicCurrentTime: 0,
             editingUserType: null,
-            editingGroupMemberIndex: -1, // 当前编辑的群成员索引
-
-            // 新增：对方主动拍一拍相关
-            partnerPokeTimer: null,  // 对方主动拍一拍的定时器
-            lastPokeTime: 0,         // 上次拍一拍的时间戳
+            editingGroupMemberIndex: -1  // 当前编辑的群成员索引
         };
         
         // 常量定义
@@ -4729,9 +4601,6 @@ class ChatApp {
         // 加载今日日期
         this.appData.todayDate = this.dataManager.getTodayDate();
         
-        // 加载拍一拍数据
-        this.appData.customPokes = this.dataManager.getPokes();
-        
         // 检查是否需要重置每日统计
         this.checkResetDailyStats();
         
@@ -4742,8 +4611,7 @@ class ChatApp {
             消息数量: this.appData.messages.length,
             表情包数量: this.appData.stickers.length,
             词条数量: this.appData.responsePhrases.length,
-            群聊成员: this.appData.groupSettings?.members?.length || 0,
-            拍一拍数量: this.appData.customPokes.length
+            群聊成员: this.appData.groupSettings?.members?.length || 0
         });
     }
     
@@ -4820,9 +4688,6 @@ class ChatApp {
         
         // 保存今日日期
         this.dataManager.saveTodayDate(this.appData.todayDate);
-        
-        // 保存拍一拍数据
-        this.dataManager.savePokes(this.appData.customPokes);
     }
     
     /**
@@ -5052,7 +4917,6 @@ class ChatApp {
                 const isCallMessage = msg.type === 'call' || msg.type === 'video';
                 const isTarotMessage = msg.isTarot;
                 const isMusicMessage = msg.type === 'music';
-                const isSystemMessage = msg.type === 'system'; // 系统消息
                 
                 if (isCallMessage) {
                     messageDiv.classList.add(`${msg.type}-message`);
@@ -5060,8 +4924,6 @@ class ChatApp {
                     messageDiv.classList.add('tarot-message');
                 } else if (isMusicMessage) {
                     messageDiv.classList.add('call-message');
-                } else if (isSystemMessage) {
-                    messageDiv.classList.add('system-message');
                 }
                 
                 // 检查是否为已读不回消息
@@ -5793,7 +5655,6 @@ class ChatApp {
         this.startAutoSending();
         this.startActiveCallScheduler();
         this.startMusicScheduler();
-        this.startPartnerPokeScheduler(); // 启动对方拍一拍定时器
     }
     
     startStatusSwitching() {
@@ -8113,38 +7974,6 @@ class ChatApp {
             saveUserInfoBtn.addEventListener('click', () => this.saveUserInfo());
         }
 
-        // ========== 新增：拍一拍模态框事件监听 ==========
-        const cancelPoke = document.getElementById('cancelPoke');
-        if (cancelPoke) {
-            cancelPoke.addEventListener('click', () => this.closePokeModal());
-        }
-        const sendPoke = document.getElementById('sendPoke');
-        if (sendPoke) {
-            sendPoke.addEventListener('click', () => this.sendPoke());
-        }
-        const pokeModal = document.getElementById('pokeModal');
-        if (pokeModal) {
-            pokeModal.addEventListener('click', (e) => {
-                if (e.target === pokeModal) this.closePokeModal();
-            });
-        }
-
-        // ========== 新增：对方拍一拍频率选择器监听 ==========
-        const partnerPokeFrequency = document.getElementById('partnerPokeFrequency');
-        if (partnerPokeFrequency) {
-            partnerPokeFrequency.addEventListener('change', (e) => {
-                const freq = parseInt(e.target.value);
-                if (this.appData.partnerPokeTimer) {
-                    clearInterval(this.appData.partnerPokeTimer);
-                }
-                if (freq > 0) {
-                    this.appData.partnerPokeTimer = setInterval(() => {
-                        this.maybePartnerSendPoke();
-                    }, freq);
-                }
-            });
-        }
-
         // ========== 新增：初始化表情包选择器 ==========
         this.initStickerPicker();
     }
@@ -8561,7 +8390,8 @@ class ChatApp {
                 if (tab === 'sticker') {
                     this.renderStickerPickerContent();
                 } else {
-                    this.renderPokeList(); // 修改：调用渲染拍一拍列表
+                    // 拍一拍功能暂未实现，显示占位
+                    document.getElementById('combo-content-area').innerHTML = '<div style="padding:20px; text-align:center; color:var(--text);">✨ 拍一拍功能开发中</div>';
                 }
             });
         });
@@ -8645,208 +8475,6 @@ class ChatApp {
                 this.saveAllData();
             }, 1000 + Math.random() * 3000);
         }
-    }
-
-    // ========================
-    // 新增：拍一拍相关方法
-    // ========================
-    openPokeModal() {
-        const modal = document.getElementById('pokeModal');
-        if (modal) {
-            modal.classList.add('active');
-            const input = document.getElementById('pokeInput');
-            if (input) {
-                input.value = '';
-                setTimeout(() => input.focus(), 100);
-            }
-        }
-    }
-
-    closePokeModal() {
-        const modal = document.getElementById('pokeModal');
-        if (modal) modal.classList.remove('active');
-    }
-
-    sendPoke() {
-        const input = document.getElementById('pokeInput');
-        let text = input.value.trim();
-        if (!text) {
-            text = `拍了拍 ${this.appData.otherInfo?.nickname || '对方'}`;
-        }
-        this.sendPokeMessage(text);
-
-        // 如果这条拍一拍不在现有库中，则添加到库并保存
-        if (!this.appData.customPokes.includes(text)) {
-            this.appData.customPokes.push(text);
-            this.dataManager.savePokes(this.appData.customPokes);
-        }
-
-        this.closePokeModal();
-    }
-
-    sendPokeMessage(pokeText) {
-        const msg = {
-            id: this.dataManager.generateMessageId(),
-            text: `✦ ${this.appData.selfInfo?.nickname || '我'} ${pokeText} ✦`,
-            sender: 'system',
-            type: 'system',
-            time: this.getCurrentTime(),
-            read: true
-        };
-        this.appData.messages.push(msg);
-        this.renderMessages();
-        this.saveAllData();
-
-        // 触发对方回复
-        setTimeout(() => {
-            this.autoSendMessage();
-        }, 1000 + Math.random() * 2000);
-    }
-
-    renderPokeList() {
-        const area = document.getElementById('combo-content-area');
-        if (!area) return;
-        const pokes = this.appData.customPokes || [];
-
-        let html = '<div class="poke-list-view">';
-        html += `<button class="custom-poke-btn" id="customPokeBtn"><i class="material-icons">edit</i> 自定义拍一拍</button>`;
-        pokes.forEach((poke, index) => {
-            html += `<div class="poke-quick-item" data-index="${index}">${poke}</div>`;
-        });
-        html += '</div>';
-        area.innerHTML = html;
-
-        // 绑定快速发送事件
-        area.querySelectorAll('.poke-quick-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const index = item.dataset.index;
-                const pokeText = this.appData.customPokes[index];
-                if (pokeText) {
-                    this.sendPokeMessage(pokeText);
-                    document.getElementById('user-sticker-picker').style.display = 'none';
-                }
-            });
-        });
-
-        // 绑定自定义按钮
-        const customBtn = document.getElementById('customPokeBtn');
-        if (customBtn) {
-            customBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.openPokeModal();
-            });
-        }
-    }
-
-    // ========================
-    // 新增：对方主动拍一拍功能
-    // ========================
-
-    /**
-     * 启动对方主动拍一拍的定时器
-     */
-    startPartnerPokeScheduler() {
-        if (this.appData.partnerPokeTimer) {
-            clearInterval(this.appData.partnerPokeTimer);
-        }
-
-        // 获取设置中的频率，默认为10分钟
-        const freqSelect = document.getElementById('partnerPokeFrequency');
-        let frequency = freqSelect ? parseInt(freqSelect.value) : 600000;
-        
-        // 如果频率为0，则不启动定时器
-        if (frequency <= 0) return;
-
-        this.appData.partnerPokeTimer = setInterval(() => {
-            this.maybePartnerSendPoke();
-        }, frequency);
-    }
-
-    /**
-     * 对方可能发送拍一拍（带概率和条件检查）
-     */
-    maybePartnerSendPoke() {
-        // 如果聊天区域没有消息（刚启动）或用户正在输入，降低概率
-        if (this.appData.messages.length < 3) return;
-        if (this.appData.isTyping) return;
-        if (this.appData.waitingForReply) return;
-
-        // 基础概率 30%
-        let probability = 0.3;
-
-        // 根据时间调整概率
-        const hour = new Date().getHours();
-        if (hour >= 22 || hour < 8) {
-            // 夜晚概率降低
-            probability *= 0.5;
-        } else if (hour >= 12 && hour < 14) {
-            // 午休时间概率降低
-            probability *= 0.6;
-        } else if (hour >= 19 && hour < 22) {
-            // 晚间活跃时间概率提高
-            probability *= 1.5;
-        }
-
-        // 根据聊天热度调整概率
-        const lastHourMessages = this.appData.messages.filter(msg => {
-            const msgTime = this.parseTimeToDate(msg.time);
-            const now = new Date();
-            return msgTime && (now - msgTime) < 3600000; // 1小时内
-        }).length;
-
-        if (lastHourMessages > 10) {
-            probability *= 1.3; // 聊天活跃时概率提高
-        }
-
-        // 随机决定是否发送
-        if (Math.random() < probability) {
-            this.partnerSendPoke();
-        }
-    }
-
-    /**
-     * 辅助方法：将时间字符串转换为Date对象
-     */
-    parseTimeToDate(timeStr) {
-        if (!timeStr) return null;
-        const [hours, minutes, seconds] = timeStr.split(':').map(Number);
-        const date = new Date();
-        date.setHours(hours, minutes, seconds || 0, 0);
-        return date;
-    }
-
-    /**
-     * 对方发送拍一拍
-     */
-    partnerSendPoke() {
-        // 获取可用的拍一拍动作库
-        const pokes = this.appData.customPokes || [];
-        if (pokes.length === 0) return;
-
-        // 随机选择一个拍一拍动作
-        const randomPoke = pokes[Math.floor(Math.random() * pokes.length)];
-        
-        // 构建对方拍一拍消息
-        const pokeMessage = {
-            id: this.dataManager.generateMessageId(),
-            text: `✦ ${this.appData.otherInfo?.nickname || '对方'} ${randomPoke} ✦`,
-            sender: 'system',
-            type: 'system',
-            time: this.getCurrentTime(),
-            read: true
-        };
-
-        // 添加消息并渲染
-        this.appData.messages.push(pokeMessage);
-        this.renderMessages();
-        this.saveAllData();
-
-        // 记录拍一拍时间
-        this.appData.lastPokeTime = Date.now();
-
-        // 显示通知
-        this.showNotification(`${this.appData.otherInfo?.nickname || '对方'} 拍了拍你`);
     }
 }
 
